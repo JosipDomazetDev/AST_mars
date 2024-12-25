@@ -10,6 +10,10 @@ def calculate_moon_overlap(
     """
     Calculates the time both moons are jointly visible.
     """
+    inputs = [D_rise_h, D_rise_m, D_set_h, D_set_m, P_rise_h, P_rise_m, P_set_h, P_set_m]
+    if any(value < 0 for value in inputs):
+        raise ValueError("All input values must be non-negative integers.")
+
     # Instantiate components
     converter = MarsTimestampConverter()
     normalizer = IntervalNormalizer()
