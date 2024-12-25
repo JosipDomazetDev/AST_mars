@@ -1,0 +1,45 @@
+@startuml
+title Mars Moon Visibility Application Core
+
+class Main {
+    + calculate_moon_overlap(inputs): int
+}
+note right of Main
+    Orchestrates the overall process and handles input/output.
+end note
+
+class MarsTimestampConverter {
+    + convert(hour: int, minute: int): int
+}
+note right of MarsTimestampConverter
+    Converts Mars timestamps into total Mars-minutes since midnight.
+end note
+
+class IntervalNormalizer {
+    + normalize(start: int, end: int): List<(int, int)>
+}
+note right of IntervalNormalizer
+    Normalizes intervals to handle wrapping around the day boundary.
+end note
+
+class OverlapCalculator {
+    + calculate_overlap(intervals1: List<(int, int)>, intervals2: List<(int, int)>): int
+}
+note right of OverlapCalculator
+    Calculates the total overlap duration between two sets of intervals.
+end note
+
+class TwilightRuleApplier {
+    + apply_twilight_rule(overlap: int, intervals1: List<(int, int)>, intervals2: List<(int, int)>): int
+}
+note right of TwilightRuleApplier
+    Applies the Twilight Rule when intervals touch at a single point.
+end note
+
+Main --> MarsTimestampConverter : Converts timestamps
+MarsTimestampConverter --> IntervalNormalizer : Normalizes intervals
+IntervalNormalizer --> OverlapCalculator : Provides intervals
+OverlapCalculator --> TwilightRuleApplier : Provides initial overlap
+TwilightRuleApplier --> Main : Provides final overlap
+
+@enduml

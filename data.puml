@@ -1,0 +1,46 @@
+@startuml
+title Sample Data Flow with Example D[24:53, 7:12], P[5:12, 8:45]
+
+' Participants representing components
+participant "Main" as Main
+participant "MarsTimestampConverter" as Converter
+participant "IntervalNormalizer" as Normalizer
+participant "OverlapCalculator" as Calculator
+participant "TwilightRuleApplier" as TwilightRule
+
+' Step 1: Convert Deimos rise time
+Main -> Converter: convert(24, 53)
+Converter --> Main: D_rise_min = 2453
+
+' Step 2: Convert Deimos set time
+Main -> Converter: convert(7, 12)
+Converter --> Main: D_set_min = 712
+
+' Step 3: Convert Phobos rise time
+Main -> Converter: convert(5, 12)
+Converter --> Main: P_rise_min = 512
+
+' Step 4: Convert Phobos set time
+Main -> Converter: convert(8, 45)
+Converter --> Main: P_set_min = 845
+
+' Step 5: Normalize Deimos intervals
+Main -> Normalizer: normalize(2453, 712)
+Normalizer --> Main: D_intervals = [(2453,2500), (0,712)]
+
+' Step 6: Normalize Phobos intervals
+Main -> Normalizer: normalize(512, 845)
+Normalizer --> Main: P_intervals = [(512,845)]
+
+' Step 7: Calculate overlap
+Main -> Calculator: calculate_overlap(D_intervals, P_intervals)
+Calculator --> Main: initial_overlap = 200
+
+' Step 8: Apply Twilight Rule
+Main -> TwilightRule: apply_twilight_rule(200, D_intervals, P_intervals)
+TwilightRule --> Main: final_overlap = 200
+
+' Step 9: Output the result
+Main -> Main: Output final_overlap = 200 Mars-minutes
+
+@enduml
